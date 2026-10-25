@@ -1,0 +1,97 @@
+@extends('layouts.admin')
+
+@section('title', 'Algitsin - Kategori Yönetimi')
+
+@section('content')
+<div class="max-w-6xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-2xl font-extrabold text-brandDark">Kategori Yönetimi</h1>
+        <p class="text-sm text-slate-500">Vitrin için yeni kategoriler ekleyin ve mevcut kategorileri yönetin.</p>
+    </div>
+
+    @if(session('success'))
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl mb-6 text-sm shadow-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit">
+    <h2 class="text-lg font-bold text-gray-900 mb-4">Yeni Kategori Ekle</h2>
+    <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        @csrf
+        <div>
+            <label class="block text-gray-700 font-medium mb-1 text-sm">Kategori Adı</label>
+            <input type="text" name="name" value="{{ old('name') }}" placeholder="Örn: Elektronik" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 font-medium mb-1 text-sm">Kapak Fotoğrafı</label>
+            <input type="file" name="image" accept="image/*" class="w-full border border-gray-300 rounded-xl p-2.5 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-orange-50 file:text-brandOrange hover:file:bg-orange-100">
+        </div>
+
+        <button type="submit" class="w-full bg-brandOrange text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-sm text-sm">Kategori Ekle</button>
+    </form>
+</div>
+
+        <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 uppercase text-xs font-semibold tracking-wider border-b border-slate-200">
+                            <th class="py-4 px-4 w-16 text-center">Görsel</th>
+                            <th class="py-4 px-4">Kategori Adı</th>
+                            <th class="py-4 px-4">Slug (URL)</th>
+                            <th class="py-4 px-4 text-center">Ürün Sayısı</th>
+                            <th class="py-4 px-4 text-center">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm text-slate-600">
+                        @forelse($categories as $category)
+                            <tr class="hover:bg-slate-50/50 transition">
+                                <td class="py-4 px-4 text-center">
+                                    @if($category->image)
+                                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="w-10 h-10 object-cover rounded-xl border border-slate-200 shadow-2xs mx-auto">
+                                    @else
+                                        <div class="w-10 h-10 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 text-xs font-bold mx-auto">
+                                            Yok
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="py-4 px-4 font-bold text-gray-900">{{ $category->name }}</td>
+                                <td class="py-4 px-4 text-xs font-mono text-slate-500">{{ $category->slug }}</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span class="bg-sky-50 text-brandBlue px-2.5 py-1 rounded-lg text-xs font-semibold">{{ $category->products_count }}</span>
+                                </td>
+                                <td class="py-4 px-4 text-center whitespace-nowrap">
+                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">Sil</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="py-12 text-center text-slate-400 font-medium">
+                                    Henüz eklenmiş bir kategori bulunmuyor.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

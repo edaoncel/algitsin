@@ -33,6 +33,20 @@
             <a href="{{ route('admin.products.create') }}" class="text-center bg-brandOrange text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-orange-600 transition shadow-sm whitespace-nowrap">+ Yeni Ürün Ekle</a>
         </div>
     </div>
+    <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
+        <a href="{{ route('admin.products.index', array_merge(request()->except('filter', 'page'), ['filter' => 'all'])) }}" 
+           class="px-4 py-2 rounded-xl text-xs font-bold transition {{ !request('filter') || request('filter') == 'all' ? 'bg-slate-900 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
+            Tüm Ürünler
+        </a>
+        <a href="{{ route('admin.products.index', array_merge(request()->except('filter', 'page'), ['filter' => 'discounted'])) }}" 
+           class="px-4 py-2 rounded-xl text-xs font-bold transition {{ request('filter') == 'discounted' ? 'bg-red-600 text-white shadow-sm' : 'bg-white text-red-600 border border-red-200 hover:bg-red-50' }}">
+            🔥 İndirimli Ürünler
+        </a>
+        <a href="{{ route('admin.products.index', array_merge(request()->except('filter', 'page'), ['filter' => 'bestseller'])) }}" 
+           class="px-4 py-2 rounded-xl text-xs font-bold transition {{ request('filter') == 'bestseller' ? 'bg-amber-600 text-white shadow-sm' : 'bg-white text-amber-600 border border-amber-200 hover:bg-amber-50' }}">
+            ⭐ Çok Satanlar
+        </a>
+    </div>
 
     @if(session('success'))
         <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl mb-6 text-sm shadow-sm">
@@ -40,15 +54,16 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-sm border border-slate-200 rounded-2xl overflow-hidden">
+<div class="bg-white shadow-sm border border-slate-200 rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 text-slate-600 uppercase text-xs font-semibold tracking-wider border-b border-slate-200">
                         <th class="py-4 px-4">Görseller</th>
                         <th class="py-4 px-4">Ürün Adı & Kategori</th>
-                        <th class="py-4 px-4">Fiyat / Stok</th>
-                        <th class="py-4 px-4">Affiliate Link</th>
+                        <th class="py-4 px-4">Fiyat / İndirimli Fiyat</th>
+                        <th class="py-4 px-4">Stok</th>
+                        <th class="py-4 px-4">Affiliate Linkler</th>
                         <th class="py-4 px-4 text-center">İşlemler</th>
                     </tr>
                 </thead>
@@ -74,13 +89,43 @@
                                 <div class="text-slate-500 text-xs line-clamp-1">{{ $product->description ?? 'Açıklama girilmemiş.' }}</div>
                             </td>
                             <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="font-extrabold text-brandBlue text-base">{{ number_format($product->price, 2) }} ₺</div>
+                                @if($product->discount_price && $product->price > 0)
+                                    @php
+                                        $discountPercent = round((($product->price - $product->discount_price) / $product->price) * 100);
+                                    @endphp
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-extrabold text-red-600 text-sm">{{ number_format($product->discount_price, 2) }} ₺</span>
+                                        <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">-%{{ $discountPercent }}</span>
+                                    </div>
+                                    <div class="text-xs text-gray-400 line-through">Normal: {{ number_format($product->price, 2) }} ₺</div>
+                                @else
+                                    <div class="font-extrabold text-brandBlue text-base">{{ number_format($product->price, 2) }} ₺</div>
+                                @endif
+                            </td>
+                            <td class="py-4 px-4 whitespace-nowrap">
                                 <div class="text-xs text-slate-500 mt-0.5">Stok: <span class="font-semibold text-gray-700">{{ $product->stock }}</span></div>
                             </td>
                             <td class="py-4 px-4 max-w-xs">
-                                <a href="{{ $product->affiliate_url }}" target="_blank" class="text-brandBlue hover:underline text-xs truncate block max-w-[180px]">
-                                    {{ $product->affiliate_url }}
-                                </a>
+                                <div class="flex flex-wrap gap-1 max-w-[220px]">
+                                    @if($product->trendyol_url)
+                                        <a href="{{ $product->trendyol_url }}" target="_blank" class="bg-orange-100 text-orange-700 hover:bg-orange-200 text-[10px] font-bold px-2 py-0.5 rounded transition">Trendyol</a>
+                                    @endif
+                                    @if($product->hepsiburada_url)
+                                        <a href="{{ $product->hepsiburada_url }}" target="_blank" class="bg-amber-100 text-amber-700 hover:bg-amber-200 text-[10px] font-bold px-2 py-0.5 rounded transition">Hepsiburada</a>
+                                    @endif
+                                    @if($product->idefix_url)
+                                        <a href="{{ $product->idefix_url }}" target="_blank" class="bg-blue-100 text-blue-700 hover:bg-blue-200 text-[10px] font-bold px-2 py-0.5 rounded transition">İdefix</a>
+                                    @endif
+                                    @if($product->amazon_url)
+                                        <a href="{{ $product->amazon_url }}" target="_blank" class="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 text-[10px] font-bold px-2 py-0.5 rounded transition">Amazon</a>
+                                    @endif
+                                    @if($product->pazarama_url)
+                                        <a href="{{ $product->pazarama_url }}" target="_blank" class="bg-red-100 text-red-700 hover:bg-red-200 text-[10px] font-bold px-2 py-0.5 rounded transition">Pazarama</a>
+                                    @endif
+                                    @if(!$product->trendyol_url && !$product->hepsiburada_url && !$product->idefix_url && !$product->amazon_url && !$product->pazarama_url)
+                                        <span class="text-xs text-slate-400 italic">Link eklenmemiş</span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="py-4 px-4 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-2">
@@ -95,7 +140,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">
+                            <td colspan="6" class="py-12 text-center text-slate-400 font-medium">
                                 @if(request('search'))
                                     Aramanıza uygun ürün bulunamadı. <a href="{{ route('admin.products.index') }}" class="text-brandOrange underline">Tüm ürünleri göster</a>
                                 @else

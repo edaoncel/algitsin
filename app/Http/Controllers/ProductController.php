@@ -9,21 +9,25 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    
-public function index(Request $request)
+    public function index(Request $request)
 {
-    $search = $request->input('search');
+    $query = Product::with('category');
 
-    $products = Product::with('category')
-        ->when($search, function ($query, $search) {
-            return $query->where('name', 'like', "%{$search}%")
-                         ->orWhere('sku', 'like', "%{$search}%");
-        })
-        ->latest()
-        ->paginate(10)
-        ->withQueryString();
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
 
-    return view('admin.products.index', compact('products', 'search'));
+    if ($request->filled('filter')) {
+        if ($request->filter == 'discounted') {
+            $query->whereNotNull('discount_price')->where('discount_price', '>', 0);
+        } elseif ($request->filter == 'bestseller') {
+            $query->where('is_best_seller', true); 
+        }
+    }
+
+    $products = $query->latest()->paginate(12)->withQueryString();
+
+    return view('admin.products.index', compact('products'));
 }
 
     public function create()
@@ -35,12 +39,17 @@ public function index(Request $request)
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:36',
             'category_id' => 'nullable|exists:categories,id',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'affiliate_url' => 'required|url',
+            'description' => 'nullable|string|max:505',
+            'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0|lt:price',
+            'stock' => 'required|integer|min:0',
+            'trendyol_url' => 'nullable|url',
+            'hepsiburada_url' => 'nullable|url',
+            'idefix_url' => 'nullable|url',
+            'amazon_url' => 'nullable|url',
+            'pazarama_url' => 'nullable|url',
             'is_best_seller' => 'nullable|boolean',
         ]);
 
@@ -68,7 +77,7 @@ public function index(Request $request)
             foreach ($request->file('images') as $image) {
                 if ($image && $image->isValid()) {
                     $ext = strtolower($image->getClientOriginalExtension());
-                    if (in_array($ext, ['jpeg', 'png', 'jpg', 'webp']) && $image->getSize() <= 2048 * 1024) {
+                    if (in_array($ext, ['jpeg', 'png', 'jpg', 'webp']) && $image->getSize() <= (2048 * 1024)) {
                         $imageName = time() . '_' . uniqid() . '.' . $ext;
                         $image->move($destinationPath, $imageName);
                         $imagePaths[] = 'img/products/' . $imageName;
@@ -94,12 +103,17 @@ public function index(Request $request)
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:36',
             'category_id' => 'nullable|exists:categories,id',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'affiliate_url' => 'required|url',
+            'description' => 'nullable|string|max:505',
+            'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0|lt:price',
+            'stock' => 'required|integer|min:0',
+            'trendyol_url' => 'nullable|url',
+            'hepsiburada_url' => 'nullable|url',
+            'idefix_url' => 'nullable|url',
+            'amazon_url' => 'nullable|url',
+            'pazarama_url' => 'nullable|url',
             'is_best_seller' => 'nullable|boolean',
         ]);
 
@@ -137,7 +151,7 @@ public function index(Request $request)
             foreach ($request->file('images') as $image) {
                 if ($image && $image->isValid()) {
                     $ext = strtolower($image->getClientOriginalExtension());
-                    if (in_array($ext, ['jpeg', 'png', 'jpg', 'webp']) && $image->getSize() <= 2048 * 1024) {
+                    if (in_array($ext, ['jpeg', 'png', 'jpg', 'webp']) && $image->getSize() <= (2048 * 1024)) {
                         $imageName = time() . '_' . uniqid() . '.' . $ext;
                         $image->move($destinationPath, $imageName);
                         $imagePaths[] = 'img/products/' . $imageName;

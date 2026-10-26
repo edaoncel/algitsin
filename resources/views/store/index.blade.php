@@ -25,7 +25,7 @@
 
     <body class="bg-white min-h-screen text-gray-900 antialiased" x-data="{ mobileMenu: false, mobileCatOpen: false }">
 
-    <nav class="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+<nav class="bg-white/95 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex justify-between items-center">
             
             <a href="{{ url('/') }}" class="flex items-center">
@@ -46,9 +46,9 @@
                          x-transition:enter-start="opacity-0 translate-y-2" 
                          x-transition:enter-end="opacity-100 translate-y-0" 
                          class="absolute left-0 mt-4 w-60 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 z-50">
-                        <a href="{{ url('/') }}" class="block px-5 py-2.5 text-xs uppercase tracking-wider font-bold text-gray-800 hover:bg-gray-50 hover:text-brandOrange transition">Tüm Ürünler</a>
+                        <a href="{{ url('/#urunler') }}" class="block px-5 py-2.5 text-xs uppercase tracking-wider font-bold text-gray-800 hover:bg-gray-50 hover:text-brandOrange transition">Tüm Ürünler</a>
                         @foreach($categories as $cat)
-                            <a href="{{ url('/?category=' . $cat->slug) }}" class="block px-5 py-2.5 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-brandOrange transition">
+                            <a href="{{ url('/?category=' . $cat->slug . '#urunler') }}" class="block px-5 py-2.5 text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-brandOrange transition">
                                 {{ $cat->name }}
                             </a>
                         @endforeach
@@ -59,8 +59,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="http://localhost/algitsin/public/admin/products" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Yönetim Paneli</a>
-                
+                <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Panel</a>
                 <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 text-gray-700 rounded-xl focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
@@ -77,22 +76,23 @@
                 </button>
                 
                 <div x-show="mobileCatOpen" x-cloak class="pl-3 mt-3 space-y-2.5 border-l-2 border-orange-100 max-h-48 overflow-y-auto">
-                    <a href="{{ url('/') }}" class="block text-xs font-semibold text-gray-800">Tüm Ürünler</a>
+                    <a href="{{ url('/#urunler') }}" class="block text-xs font-semibold text-gray-800">Tüm Ürünler</a>
                     @if(isset($categories))
                         @foreach($categories as $cat)
-                            <a href="{{ url('/?category=' . $cat->slug) }}" class="block text-xs text-gray-600 hover:text-brandOrange transition">{{ $cat->name }}</a>
+                            <a href="{{ url('/?category=' . $cat->slug . '#urunler') }}" class="block text-xs text-gray-600 hover:text-brandOrange transition">{{ $cat->name }}</a>
                         @endforeach
                     @endif
                 </div>
             </div>
 
             <div class="pt-2">
-                <a href="{{ url('/iletisim') }}" class="block text-sm font-bold text-brandOrange">İletişim</a>
+                <a href="{{ route('contact') }}" class="block text-sm font-bold text-brandOrange">İletişim</a>
             </div>
             <div class="pt-2">
-                <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Yönetim Paneli</a>
+                <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Panel</a>
             </div>
         </div>
+    </nav>
 
     <header class="bg-gray-200 text-white py-20 px-6 text-center relative overflow-hidden">
         <div class="max-w-4xl mx-auto relative z-10">
@@ -100,15 +100,17 @@
             <h1 class="text-4xl sm:text-6xl font-black mb-6 tracking-tight uppercase">Sezonun En İyileri</h1>
             <p class="text-gray-600 mb-10 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">Özenle seçilmiş trend ürünleri yüksek görsel kalitesi ve avantajlı fırsatlarla keşfedin.</p>
             
-            <form action="{{ url('/') }}" method="GET" class="flex flex-row items-center gap-1.5 max-w-xl mx-auto w-full bg-white/5 p-1.5 sm:p-2 rounded-full backdrop-blur-md border border-white/10 shadow-lg">
+            <form action="{{ url('/') }}#urunler" method="GET" class="flex flex-row items-center gap-1.5 max-w-xl mx-auto w-full bg-white/5 p-1.5 sm:p-2 rounded-full backdrop-blur-md border border-white/10 shadow-lg">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Ürün ara..." class="w-full px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-gray-900 bg-white focus:outline-none text-xs sm:text-sm font-medium">
                 <button type="submit" class="bg-brandOrange text-white px-5 sm:px-8 py-2.5 sm:py-3 rounded-full font-bold uppercase tracking-wider hover:bg-orange-600 transition text-[11px] sm:text-xs shrink-0 shadow-md">Keşfet</button>
             </form>
         </div>
     </header>
 
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative font-sans overflow-hidden" x-data="{ activeIndex: 0 }">
-    
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative font-sans overflow-hidden" 
+         x-data="{ activeIndex: 0, openModal: false, product: null }"
+         x-init="setInterval(() => { activeIndex = (activeIndex + 1) % {{ count($bestSellers) }}; }, 5000)">
+         
     <div class="flex items-center justify-between pb-6 border-b border-gray-200 mb-8">
         <div class="flex items-center space-x-4">
             <button class="p-1 hover:bg-gray-100 rounded">
@@ -162,7 +164,7 @@
                     </h3>
                 </div>
 
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none italic">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white uppercase tracking-tighter leading-none italic">
                     {{ $item->name }}
                 </h1>
 
@@ -223,12 +225,162 @@
 
 </section>
 
+<main x-data="{ openModal: false, product: null }" class="max-w-7xl mx-auto px-3 sm:px-8 py-12">
+    @if(isset($discountedProducts) && $discountedProducts->count() > 0 && !request('search') && !request('category'))
+    <section class="mb-16">
+        <div class="flex justify-between items-end mb-8 border-b border-gray-100 pb-4">
+            <div>
+                <span class="text-xs uppercase font-bold text-red-500 tracking-widest flex items-center gap-1">
+                    🔥 Sınırlı Süre Fırsatlar
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 mt-1">İndirimli Ürünler</h2>
+            </div>
+        </div>
 
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10">
+            @foreach($discountedProducts as $product)
+                <div class="group flex flex-col justify-between bg-white rounded-2xl p-4 shadow-sm border border-red-100 relative overflow-hidden">
+                    @php
+                        $discountPercent = round((($product->price - $product->discount_price) / $product->price) * 100);
+                    @endphp
+                    <span class="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md z-20">
+                        -%{{ $discountPercent }} İndirim
+                    </span>
+
+                    <div>
+                        <div class="h-64 sm:h-80 bg-gray-100 relative overflow-hidden rounded-2xl mb-4 shadow-sm" x-data="{ active: 0, images: {{ json_encode($product->images ?? []) }} }">
+                            @if($product->images && count($product->images) > 0)
+                                <template x-for="(img, idx) in images" :key="idx">
+                                    <div x-show="active === idx" class="absolute inset-0 w-full h-full transition-opacity duration-500">
+                                        <img :src="'{{ asset('') }}' + img" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
+                                    </div>
+                                </template>
+                            @else
+                                <div class="flex items-center justify-center h-full text-gray-400 text-xs uppercase tracking-widest font-semibold">
+                                    Görsel Yok
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="px-1">
+                            <h3 class="font-bold text-gray-900 text-sm sm:text-base mb-1 group-hover:text-red-600 transition line-clamp-1">{{ $product->name }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="px-1 flex items-center justify-between pt-3 border-t border-gray-100 gap-2 mt-2">
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+                                <span class="text-sm sm:text-lg font-black text-red-600">{{ number_format($product->discount_price, 2) }} ₺</span>
+                                <span class="text-[11px] sm:text-xs text-gray-400 line-through">{{ number_format($product->price, 2) }} ₺</span>
+                            </div>
+                        </div>
+                        
+                        <button @click="openModal = true; product = JSON.parse($el.getAttribute('data-product'))"
+                                data-product="{{ json_encode([
+                                    'name' => $product->name,
+                                    'trendyol_url' => $product->trendyol_url,
+                                    'hepsiburada_url' => $product->hepsiburada_url,
+                                    'idefix_url' => $product->idefix_url,
+                                    'amazon_url' => $product->amazon_url,
+                                    'pazarama_url' => $product->pazarama_url
+                                ]) }}"
+                                class="bg-gray-900 text-white hover:bg-red-600 text-center px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer whitespace-nowrap">
+                            İncele
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+    @endif
+    <!-- PLATFORM SEÇİM MODALI -->
+    <div x-show="openModal" 
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div @click.away="openModal = false" 
+             class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden transform transition-all"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95">
+            
+            <button @click="openModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="mb-5 pr-8">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-brandOrange">Platform Seçimi</span>
+                <h3 class="text-xl font-black text-gray-900 mt-0.5" x-text="product?.name"></h3>
+                <p class="text-xs text-gray-500 mt-1">Alışverişinize devam etmek istediğiniz platformu seçin:</p>
+            </div>
+
+            <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+                <template x-if="product?.trendyol_url">
+                    <a :href="product.trendyol_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Trendyol
+                        </span>
+                        <svg class="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.hepsiburada_url">
+                    <a :href="product.hepsiburada_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Hepsiburada
+                        </span>
+                        <svg class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.idefix_url">
+                    <a :href="product.idefix_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> İdefix
+                        </span>
+                        <svg class="w-4 h-4 text-blue-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.amazon_url">
+                    <a :href="product.amazon_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 text-yellow-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Amazon
+                        </span>
+                        <svg class="w-4 h-4 text-yellow-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.pazarama_url">
+                    <a :href="product.pazarama_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Pazarama
+                        </span>
+                        <svg class="w-4 h-4 text-red-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+            </div>
+
+            <div class="mt-5 text-center border-t border-gray-100 pt-4">
+                <span class="text-[11px] text-gray-400">Güvenli ve hızlı yönlendirme ile en avantajlı fiyatı yakalayın.</span>
+            </div>
+        </div>
+    </div>
+</main>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-6">
     <div id="categorySlider" class="flex gap-6 overflow-x-auto pb-4 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth focus:outline-none" style="scrollbar-width: none; -ms-overflow-style: none;">
         @forelse($categories as $category)
-            <a href="{{ route('store.index', ['category' => $category->slug]) }}" class="group flex flex-col items-center text-center shrink-0 w-32 sm:w-40 snap-start">
+            <a href="{{ route('store.index', ['category' => $category->slug]) }}#urunler" class="group flex flex-col items-center text-center shrink-0 w-32 sm:w-40 snap-start">
                 
                 <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-slate-100 shadow-sm group-hover:shadow-md group-hover:scale-105 transition duration-300 relative border-2 sm:border-4 border-slate-100 group-hover:border-brandOrange">
                     @if($category->image)
@@ -256,80 +408,184 @@
     </div>
 </section>
 
-<main class="max-w-7xl mx-auto px-3 sm:px-8 py-16">
-        <div class="flex justify-between items-end mb-12 border-b border-gray-100 pb-6">
-            <div>
-                <span class="text-xs uppercase font-bold text-gray-400 tracking-widest">Koleksiyon</span>
-                <h2 class="text-3xl font-black tracking-tight text-gray-900 mt-1">Ürünler</h2>
-            </div>
-            @if(request('category') || request('search'))
-                <a href="{{ url('/') }}" class="text-xs font-bold text-brandOrange hover:underline uppercase tracking-wider">Filtreyi Kaldır ✕</a>
-            @endif
+<main x-data="{ openModal: false, product: null }" class="max-w-7xl mx-auto px-3 sm:px-8 py-16">
+        <div id="urunler" class="scroll-mt-24">
+            <span class="text-xs uppercase font-bold text-gray-400 tracking-widest">Koleksiyon</span>
+            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 mt-1">Ürünler</h2>
         </div>
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10 mt-6">
+        @forelse($products as $product)
+            <div class="group flex flex-col justify-between bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+                <div>
+                    <div class="h-64 sm:h-96 bg-gray-100 relative overflow-hidden rounded-2xl mb-4 sm:mb-5 shadow-sm" x-data="{ active: 0, images: {{ json_encode($product->images ?? []) }} }">
+                        @if($product->images && count($product->images) > 0)
+                            <template x-for="(img, idx) in images" :key="idx">
+                                <div x-show="active === idx" class="absolute inset-0 w-full h-full transition-opacity duration-500">
+                                    <img :src="'{{ asset('') }}' + img" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
+                                </div>
+                            </template>
 
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10">
-            @forelse($products as $product)
-                <div class="group flex flex-col justify-between">
-                    <div>
-                        <div class="h-64 sm:h-96 bg-gray-100 relative overflow-hidden rounded-2xl mb-4 sm:mb-5 shadow-sm" x-data="{ active: 0, images: {{ json_encode($product->images ?? []) }} }">
-                            @if($product->images && count($product->images) > 0)
-                                <template x-for="(img, idx) in images" :key="idx">
-                                    <div x-show="active === idx" class="absolute inset-0 w-full h-full transition-opacity duration-500">
-                                        <img :src="'{{ asset('') }}' + img" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
-                                    </div>
-                                </template>
-
-                                @if(count($product->images) > 1)
-                                    <button @click.prevent="active = (active === 0) ? images.length - 1 : active - 1" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1.5 sm:p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm z-10 focus:outline-none">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                                    </button>
-                                    <button @click.prevent="active = (active === images.length - 1) ? 0 : active + 1" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1.5 sm:p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm z-10 focus:outline-none">
-                                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                    </button>
-                                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1 z-10 bg-black/30 backdrop-blur-md px-2 py-1 rounded-full">
-                                        <template x-for="(img, idx) in images" :key="idx">
-                                            <button @click.prevent="active = idx" :class="active === idx ? 'bg-white w-3' : 'bg-white/50 w-1'" class="h-1 rounded-full transition-all duration-300 focus:outline-none"></button>
-                                        </template>
-                                    </div>
-                                @endif
-                            @else
-                                <div class="flex items-center justify-center h-full text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold">
-                                    Görsel Yok
+                            @if(count($product->images) > 1)
+                                <button @click.prevent="active = (active === 0) ? images.length - 1 : active - 1" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1.5 sm:p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm z-10 focus:outline-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                </button>
+                                <button @click.prevent="active = (active === images.length - 1) ? 0 : active + 1" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1.5 sm:p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm z-10 focus:outline-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </button>
+                                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1 z-10 bg-black/30 backdrop-blur-md px-2 py-1 rounded-full">
+                                    <template x-for="(img, idx) in images" :key="idx">
+                                        <button @click.prevent="active = idx" :class="active === idx ? 'bg-white w-3' : 'bg-white/50 w-1'" class="h-1 rounded-full transition-all duration-300 focus:outline-none"></button>
+                                    </template>
                                 </div>
                             @endif
+                        @else
+                            <div class="flex items-center justify-center h-full text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest font-semibold">
+                                Görsel Yok
+                            </div>
+                        @endif
 
-                            @if($product->category)
-                                <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm z-10">
-                                    {{ $product->category->name }}
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="px-1">
-                            <h2 class="font-bold text-gray-900 text-sm sm:text-lg mb-1 group-hover:text-brandOrange transition line-clamp-1">{{ $product->name }}</h2>
-                            <p class="text-gray-500 text-[11px] sm:text-xs line-clamp-2 mb-3 leading-relaxed font-light hidden sm:block">{{ $product->description ?? 'Özel tasarım ve yüksek kalite.' }}</p>
-                        </div>
+                        @if($product->category)
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-gray-900 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm z-10">
+                                {{ $product->category->name }}
+                            </span>
+                        @endif
                     </div>
 
-                    <div class="px-1 flex flex-col sm:flex-row sm:items-center justify-between pt-2 sm:pt-3 border-t border-gray-100 mt-2 gap-2">
-                        <div>
+                    <div class="px-1">
+                        <h2 class="font-bold text-gray-900 text-sm sm:text-lg mb-1 group-hover:text-brandOrange transition line-clamp-1">{{ $product->name }}</h2>
+                        <p class="text-gray-500 text-[11px] sm:text-xs line-clamp-2 mb-3 leading-relaxed font-light hidden sm:block">{{ $product->description ?? 'Özel tasarım ve yüksek kalite.' }}</p>
+                    </div>
+                </div>
+
+                <div class="px-1 flex flex-col sm:flex-row sm:items-center justify-between pt-2 sm:pt-3 border-t border-gray-100 mt-2 gap-2">
+                    <div>
+                        @if($product->discount_price && $product->price > 0)
+                            @php
+                                $discountPercent = round((($product->price - $product->discount_price) / $product->price) * 100);
+                            @endphp
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-base sm:text-xl font-black text-gray-900">{{ number_format($product->discount_price, 2) }} ₺</span>
+                                <span class="text-xs text-gray-400 line-through">{{ number_format($product->price, 2) }} ₺</span>
+                            </div>
+                            <div class="flex items-center gap-1 mt-0.5">
+                                <span class="bg-red-500 text-white text-[9px] sm:text-[10px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
+                                    -%{{ $discountPercent }}
+                                </span>
+                                <span class="text-[10px] text-gray-400 uppercase tracking-wider hidden sm:inline">| Stok: <span class="font-semibold text-gray-700">{{ $product->stock }}</span></span>
+                            </div>
+                        @else
                             <span class="text-base sm:text-xl font-black text-gray-900 block">{{ number_format($product->price, 2) }} ₺</span>
                             <span class="text-[10px] text-gray-400 uppercase tracking-wider hidden sm:block">Stok: <span class="font-semibold text-gray-700">{{ $product->stock }}</span></span>
-                        </div>
-                        <a href="{{ $product->affiliate_url }}" target="_blank" class="bg-gray-900 text-white hover:bg-brandOrange w-full sm:w-auto text-center px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition shadow-sm">İncele</a>
+                        @endif
                     </div>
+                    
+                    <button @click="openModal = true; product = JSON.parse($el.getAttribute('data-product'))"
+                            data-product="{{ json_encode([
+                                'name' => $product->name,
+                                'trendyol_url' => $product->trendyol_url,
+                                'hepsiburada_url' => $product->hepsiburada_url,
+                                'idefix_url' => $product->idefix_url,
+                                'amazon_url' => $product->amazon_url,
+                                'pazarama_url' => $product->pazarama_url
+                            ]) }}"
+                            class="bg-gray-900 text-white hover:bg-red-600 text-center px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer whitespace-nowrap">
+                        İncele
+                    </button>
                 </div>
-            @empty
-                <div class="col-span-full text-center py-24 text-gray-400">
-                    <p class="text-base font-medium">Bu kategoride henüz ürün sergilenmiyor.</p>
-                </div>
-            @endforelse
-        </div>
+            </div>
+        @empty
+            <div class="col-span-full text-center py-24 text-gray-400">
+                <p class="text-base font-medium">Bu kategoride henüz ürün sergilenmiyor.</p>
+            </div>
+        @endforelse
+    </div>
 
-        <div class="mt-16">
-            {{ $products->links() }}
+    <div class="mt-16">
+        {{ $products->links() }}
+    </div>
+
+    <div x-show="openModal" 
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div @click.away="openModal = false" 
+             class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden transform transition-all"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95">
+            
+            <button @click="openModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="mb-5 pr-8">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-brandOrange">Platform Seçimi</span>
+                <h3 class="text-xl font-black text-gray-900 mt-0.5" x-text="product?.name"></h3>
+                <p class="text-xs text-gray-500 mt-1">Alışverişinize devam etmek istediğiniz platformu seçin:</p>
+            </div>
+
+            <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+                <template x-if="product?.trendyol_url">
+                    <a :href="product.trendyol_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Trendyol
+                        </span>
+                        <svg class="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.hepsiburada_url">
+                    <a :href="product.hepsiburada_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Hepsiburada
+                        </span>
+                        <svg class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.idefix_url">
+                    <a :href="product.idefix_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> İdefix
+                        </span>
+                        <svg class="w-4 h-4 text-blue-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.amazon_url">
+                    <a :href="product.amazon_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 text-yellow-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Amazon
+                        </span>
+                        <svg class="w-4 h-4 text-yellow-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+
+                <template x-if="product?.pazarama_url">
+                    <a :href="product.pazarama_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 font-bold transition group">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Pazarama
+                        </span>
+                        <svg class="w-4 h-4 text-red-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </template>
+            </div>
+
+            <div class="mt-5 text-center border-t border-gray-100 pt-4">
+                <span class="text-[11px] text-gray-400">Güvenli ve hızlı yönlendirme ile en avantajlı fiyatı yakalayın.</span>
+            </div>
         </div>
-    </main>
+    </div>
+</main>
 
     <section class="max-w-7xl mx-auto px-4 sm:px-8 -mt-8 relative z-30">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -685,7 +941,7 @@
                 <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
                 <ul class="space-y-2 text-gray-400 font-light">
                     <li><a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a></li>
-                    <li><a href="http://localhost/algitsin/public/admin/products" class="hover:text-white transition">Yönetim Paneli</a></li>
+                    <li><a href="http://localhost/algitsin/public/admin/products" class="hover:text-white transition">Panel</a></li>
                 </ul>
             </div>
             <div>

@@ -22,9 +22,18 @@
 
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
-            <div>
-                <label class="block text-gray-700 font-medium mb-1 text-sm">Ürün Adı</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
+            <div x-data="{ count: {{ mb_strlen(old('name', $product->name ?? '')) }} }">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-gray-700 font-medium text-sm">Ürün Adı</label>
+                    <span class="text-xs font-semibold text-gray-400" x-text="count + ' / 36'"></span>
+                </div>
+                <input type="text" 
+                    name="name" 
+                    value="{{ old('name', $product->name ?? '') }}" 
+                    maxlength="36" 
+                    @input="count = $el.value.length" 
+                    class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
+                    required>
             </div>
             <div>
                 <label class="block text-gray-700 font-medium mb-1 text-sm">Kategori</label>
@@ -38,9 +47,17 @@
                 </select>
             </div>
             
-            <div>
-                <label class="block text-gray-700 font-medium mb-1 text-sm">Ürün Açıklaması</label>
-                <textarea name="description" rows="3" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="Ürün hakkında detaylar...">{{ old('description') }}</textarea>
+            <div x-data="{ count: {{ mb_strlen(old('description', '')) }} }">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-gray-700 font-medium text-sm">Ürün Açıklaması</label>
+                    <span class="text-xs font-semibold text-gray-400" x-text="count + ' / 505'"></span>
+                </div>
+                <textarea name="description" 
+                        rows="3" 
+                        maxlength="505" 
+                        @input="count = $el.value.length" 
+                        class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
+                        placeholder="Ürün hakkında detaylar...">{{ old('description') }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -49,14 +66,36 @@
                     <input type="number" step="0.01" name="price" value="{{ old('price') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
                 </div>
                 <div>
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">İndirimli Fiyat (₺) <span class="text-xs text-gray-400 font-normal">(İsteğe Bağlı)</span></label>
+                    <input type="number" step="0.01" name="discount_price" value="{{ old('discount_price') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="Varsa indirimli fiyat">
+                </div>
+                <div>
                     <label class="block text-gray-700 font-medium mb-1 text-sm">Stok Adedi</label>
                     <input type="number" name="stock" value="{{ old('stock', 10) }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
                 </div>
             </div>
 
-            <div>
-                <label class="block text-gray-700 font-medium mb-1 text-sm">Affiliate Yönlendirme Linki</label>
-                <input type="url" name="affiliate_url" value="{{ old('affiliate_url') }}" placeholder="https://..." class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Trendyol Linki</label>
+                    <input type="url" name="trendyol_url" value="{{ old('trendyol_url', $product->trendyol_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.trendyol.com/...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Hepsiburada Linki</label>
+                    <input type="url" name="hepsiburada_url" value="{{ old('hepsiburada_url', $product->hepsiburada_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.hepsiburada.com/...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-600 mb-1">İdefix Linki</label>
+                    <input type="url" name="idefix_url" value="{{ old('idefix_url', $product->idefix_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.idefix.com/...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Amazon Linki</label>
+                    <input type="url" name="amazon_url" value="{{ old('amazon_url', $product->amazon_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.amazon.com.tr/...">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Pazarama Linki</label>
+                    <input type="url" name="pazarama_url" value="{{ old('pazarama_url', $product->pazarama_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.pazarama.com/...">
+                </div>
             </div>
 
             <div>

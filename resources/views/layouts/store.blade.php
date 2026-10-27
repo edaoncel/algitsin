@@ -62,7 +62,7 @@
                 @auth('admin')
                     <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Yönetim Paneli</a>
                 @else
-                    <a href="{{ route('admin.login') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Giriş Yap</a>
+                    <a href="{{ route('admin.login') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Admin Girişi</a>
                 @endauth
                 
                 <button x-on:click="mobileMenu = !mobileMenu" type="button" class="md:hidden p-2 text-gray-700 rounded-xl focus:outline-none">
@@ -97,7 +97,7 @@
                 @auth('admin')
                     <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition hover:bg-brandOrange">Yönetim Paneli</a>
                 @else
-                    <a href="{{ route('admin.login') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition hover:bg-brandOrange">Giriş Yap</a>
+                    <a href="{{ route('admin.login') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition hover:bg-brandOrange">Admin Girişi</a>
                 @endauth
             </div>
         </div>

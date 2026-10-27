@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,11 +33,11 @@
             </a>
 
             <div class="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide text-gray-700">
-                <a href="{{ url('/') }}" class="text-brandOrange font-semibold transition">Anasayfa</a>
+                <a href="{{ url('/') }}" class="text-brandOrange font-semibold transition">ANASAYFA</a>
                 
                 <div class="relative" x-data="{ catOpen: false }">
                     <button @click="catOpen = !catOpen" @click.away="catOpen = false" type="button" class="flex items-center gap-1.5 hover:text-brandOrange transition focus:outline-none">
-                        Kategoriler
+                        KATEGORİLER
                         <svg class="w-4 h-4 transition-transform duration-200" :class="catOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
@@ -55,11 +55,15 @@
                     </div>
                 </div>
 
-                <a href="{{ route('contact') }}" class="hover:text-brandOrange transition">İletişim</a>
+                <a href="{{ route('contact') }}" class="hover:text-brandOrange transition">İLETİŞİM</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Yönetim Paneli</a>
+                @auth('admin')
+                    <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Yönetim Paneli</a>
+                @else
+                    <a href="{{ route('admin.login') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Giriş Yap</a>
+                @endauth
                 
                 <button x-on:click="mobileMenu = !mobileMenu" type="button" class="md:hidden p-2 text-gray-700 rounded-xl focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -68,11 +72,11 @@
         </div>
 
         <div x-show="mobileMenu" x-cloak class="md:hidden bg-white border-b border-gray-100 px-6 py-5 space-y-4 shadow-xl">
-            <a href="{{ url('/') }}" class="block text-sm font-medium text-gray-700">Anasayfa</a>
+            <a href="{{ url('/') }}" class="block text-sm font-medium text-gray-700">ANASAYFA</a>
             
             <div>
                 <button x-on:click="mobileCatOpen = !mobileCatOpen" type="button" class="w-full flex justify-between items-center text-xs font-extrabold text-gray-400 uppercase tracking-widest pt-2 focus:outline-none">
-                    <span>Kategoriler</span>
+                    <span>KATEGORİLER</span>
                     <svg class="w-4 h-4 transition-transform duration-200" :class="mobileCatOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 
@@ -87,10 +91,14 @@
             </div>
 
             <div class="pt-2">
-                <a href="{{ route('contact') }}" class="block text-sm font-bold text-brandOrange">İletişim</a>
+                <a href="{{ route('contact') }}" class="block text-sm font-bold text-brandOrange">İLETİŞİM</a>
             </div>
             <div class="pt-2">
-                <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Yönetim Paneli</a>
+                @auth('admin')
+                    <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition hover:bg-brandOrange">Yönetim Paneli</a>
+                @else
+                    <a href="{{ route('admin.login') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition hover:bg-brandOrange">Giriş Yap</a>
+                @endauth
             </div>
         </div>
     </nav>
@@ -99,33 +107,66 @@
         @yield('content')
     </main>
 
-    <footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-            <div>
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4 brightness-120">
-                <p class="text-gray-400 font-light leading-relaxed">Özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.</p>
-            </div>
-            <div>
-                <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
-                <ul class="space-y-2 text-gray-400 font-light">
-                    <li><a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a></li>
-                    <li><a href="{{ route('admin.dashboard') }}" class="hover:text-white transition">Yönetim Paneli</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
-                <p class="text-gray-400 font-light">Destek ve işbirliği için:</p>
-                <p class="text-brandOrange font-bold mt-1">iletisim@alveral.com</p>
-            </div>
+<footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+        
+        <div>
+            <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4 brightness-120">
+            <p class="text-gray-400 font-light leading-relaxed">
+                30 yılı aşkın tecrübemizle özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.
+            </p>
         </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
-            <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
-            <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
-                <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
-                <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
+
+        <div>
+            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
+            <ul class="space-y-2.5 text-gray-400 font-light">
+                <li>
+                    <a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a>
+                </li>
+                <li>
+                    <a href="{{ route('contact') }}" class="hover:text-white transition">Hakkımızda & İletişim</a>
+                </li>
+                
+                <li>
+                    <a href="https://www.instagram.com/alveral.tr/" target="_blank" class="hover:text-white transition flex items-center gap-2 group">
+                        <svg class="w-4 h-4 text-brandOrange group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                        </svg>
+                        <span>Instagram (@alveral.tr)</span>
+                    </a>
+                </li>
+
+                @auth('admin')
+                    <li class="pt-2 border-t border-gray-800">
+                        <a href="{{ route('admin.dashboard') }}" class="text-brandOrange hover:text-orange-400 font-bold transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>Yönetim Paneli</span>
+                        </a>
+                    </li>
+                @endauth
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
+            <p class="text-gray-400 font-light">Destek, öneri ve iş birliği talepleriniz için:</p>
+            <a href="mailto:iletisim@alveral.com" class="inline-block text-brandOrange font-bold mt-2 hover:underline transition">
+                iletisim@alveral.com
             </a>
         </div>
-    </footer>
+
+    </div>
+
+    <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
+        <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
+        <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
+            <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
+            <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
+        </a>
+    </div>
+</footer>
 
 </body>
 </html>

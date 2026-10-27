@@ -47,3 +47,5 @@ Route::prefix('yonetim')->name('admin.')->group(function () {
         Route::resource('products', App\Http\Controllers\ProductController::class);
     });
 });
+
+Route::resource('admin/categories', CategoryController::class)->except(['show']);

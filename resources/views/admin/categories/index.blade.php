@@ -74,11 +74,17 @@
                                     <span class="bg-sky-50 text-brandBlue px-2.5 py-1 rounded-lg text-xs font-semibold">{{ $category->products_count }}</span>
                                 </td>
                                 <td class="py-4 px-4 text-center whitespace-nowrap">
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">Sil</button>
-                                    </form>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">
+                                            Düzenle
+                                        </a>
+
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">Sil</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

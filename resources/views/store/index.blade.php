@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alveral - E- Ticaret Resmi Satış Sitesi</title>
     <link rel="icon" type="image/png" href="{{ asset('img/logo/link_logo.png') }}">
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -33,11 +36,11 @@
             </a>
 
             <div class="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide text-gray-700">
-                <a href="{{ url('/') }}" class="text-brandOrange font-semibold transition">Anasayfa</a>
+                <a href="{{ url('/') }}" class="text-brandOrange font-semibold transition">ANASAYFA</a>
                 
                 <div class="relative" x-data="{ catOpen: false }">
                     <button @click="catOpen = !catOpen" @click.away="catOpen = false" type="button" class="flex items-center gap-1.5 hover:text-brandOrange transition focus:outline-none">
-                        Kategoriler
+                        KATEGORİLER
                         <svg class="w-4 h-4 transition-transform duration-200" :class="catOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
@@ -55,11 +58,16 @@
                     </div>
                 </div>
 
-                <a href="{{ route('contact') }}" class="hover:text-brandOrange transition">İletişim</a>
+                <a href="{{ route('contact') }}" class="hover:text-brandOrange transition">İLETİŞİM</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Panel</a>
+                @auth('admin')
+                    <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Panel</a>
+                @else
+                    <a href="{{ route('admin.login') }}" class="hidden sm:inline-flex bg-gray-900 text-white hover:bg-brandOrange px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition">Giriş Yap</a>
+                @endauth
+
                 <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 text-gray-700 rounded-xl focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
@@ -67,11 +75,11 @@
         </div>
 
         <div x-show="mobileMenu" x-cloak class="md:hidden bg-white border-b border-gray-100 px-6 py-5 space-y-4 shadow-xl">
-            <a href="{{ url('/') }}" class="block text-sm font-bold text-brandOrange">Anasayfa</a>
+            <a href="{{ url('/') }}" class="block text-sm font-bold text-brandOrange">ANASAYFA</a>
             
             <div>
                 <button @click="mobileCatOpen = !mobileCatOpen" type="button" class="w-full flex justify-between items-center text-xs font-extrabold text-gray-400 uppercase tracking-widest pt-2 focus:outline-none">
-                    <span>Kategoriler</span>
+                    <span>KATEGORİLER</span>
                     <svg class="w-4 h-4 transition-transform duration-200" :class="mobileCatOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 
@@ -86,10 +94,14 @@
             </div>
 
             <div class="pt-2">
-                <a href="{{ route('contact') }}" class="block text-sm font-bold text-brandOrange">İletişim</a>
+                <a href="{{ route('contact') }}" class="block text-sm font-bold text-brandOrange">İLETİŞİM</a>
             </div>
             <div class="pt-2">
-                <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Panel</a>
+                @auth('admin')
+                    <a href="{{ route('admin.dashboard') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Panel</a>
+                @else
+                    <a href="{{ route('admin.login') }}" class="block text-center bg-gray-900 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider">Giriş Yap</a>
+                @endauth
             </div>
         </div>
     </nav>
@@ -293,7 +305,6 @@
         </div>
     </section>
     @endif
-    <!-- PLATFORM SEÇİM MODALI -->
     <div x-show="openModal" 
          x-cloak
          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
@@ -504,87 +515,87 @@
         {{ $products->links() }}
     </div>
 
-    <div x-show="openModal" 
-         x-cloak
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+  <div x-show="openModal" 
+     x-cloak
+     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+    
+    <div @click.away="openModal = false" 
+         class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden transform transition-all"
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
          x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0">
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95">
         
-        <div @click.away="openModal = false" 
-             class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden transform transition-all"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95">
-            
-            <button @click="openModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+        <button @click="openModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
 
-            <div class="mb-5 pr-8">
-                <span class="text-[10px] uppercase font-bold tracking-widest text-brandOrange">Platform Seçimi</span>
-                <h3 class="text-xl font-black text-gray-900 mt-0.5" x-text="product?.name"></h3>
-                <p class="text-xs text-gray-500 mt-1">Alışverişinize devam etmek istediğiniz platformu seçin:</p>
-            </div>
+        <div class="mb-5 pr-8">
+            <span class="text-[10px] uppercase font-bold tracking-widest text-brandOrange">Platform Seçimi</span>
+            <h3 class="text-xl font-black text-gray-900 mt-0.5" x-text="product?.name"></h3>
+            <p class="text-xs text-gray-500 mt-1">Alışverişinize devam etmek istediğiniz platformu seçin:</p>
+        </div>
 
-            <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
-                <template x-if="product?.trendyol_url">
-                    <a :href="product.trendyol_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 font-bold transition group">
-                        <span class="flex items-center gap-2.5 text-sm">
-                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Trendyol
-                        </span>
-                        <svg class="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
-                </template>
+        <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1">
+            <template x-if="product?.trendyol_url">
+                <a :href="product.trendyol_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-900 font-bold transition group">
+                    <span class="flex items-center gap-2.5 text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Trendyol
+                    </span>
+                    <svg class="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </template>
 
-                <template x-if="product?.hepsiburada_url">
-                    <a :href="product.hepsiburada_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition group">
-                        <span class="flex items-center gap-2.5 text-sm">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Hepsiburada
-                        </span>
-                        <svg class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
-                </template>
+            <template x-if="product?.hepsiburada_url">
+                <a :href="product.hepsiburada_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition group">
+                    <span class="flex items-center gap-2.5 text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Hepsiburada
+                    </span>
+                    <svg class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </template>
 
-                <template x-if="product?.idefix_url">
-                    <a :href="product.idefix_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 font-bold transition group">
-                        <span class="flex items-center gap-2.5 text-sm">
-                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> İdefix
-                        </span>
-                        <svg class="w-4 h-4 text-blue-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
-                </template>
+            <template x-if="product?.idefix_url">
+                <a :href="product.idefix_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 font-bold transition group">
+                    <span class="flex items-center gap-2.5 text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> İdefix
+                    </span>
+                    <svg class="w-4 h-4 text-blue-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </template>
 
-                <template x-if="product?.amazon_url">
-                    <a :href="product.amazon_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 text-yellow-900 font-bold transition group">
-                        <span class="flex items-center gap-2.5 text-sm">
-                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Amazon
-                        </span>
-                        <svg class="w-4 h-4 text-yellow-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
-                </template>
+            <template x-if="product?.amazon_url">
+                <a :href="product.amazon_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 text-yellow-900 font-bold transition group">
+                    <span class="flex items-center gap-2.5 text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Amazon
+                    </span>
+                    <svg class="w-4 h-4 text-yellow-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </template>
 
-                <template x-if="product?.pazarama_url">
-                    <a :href="product.pazarama_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 font-bold transition group">
-                        <span class="flex items-center gap-2.5 text-sm">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Pazarama
-                        </span>
-                        <svg class="w-4 h-4 text-red-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </a>
-                </template>
-            </div>
+            <template x-if="product?.pazarama_url">
+                <a :href="product.pazarama_url" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 font-bold transition group">
+                    <span class="flex items-center gap-2.5 text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Pazarama
+                    </span>
+                    <svg class="w-4 h-4 text-red-500 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </template>
+        </div>
 
-            <div class="mt-5 text-center border-t border-gray-100 pt-4">
-                <span class="text-[11px] text-gray-400">Güvenli ve hızlı yönlendirme ile en avantajlı fiyatı yakalayın.</span>
-            </div>
+        <div class="mt-5 text-center border-t border-gray-100 pt-4">
+            <span class="text-[11px] text-gray-400">Güvenli ve hızlı yönlendirme ile en avantajlı fiyatı yakalayın.</span>
         </div>
     </div>
+</div>
 </main>
 
     <section class="max-w-7xl mx-auto px-4 sm:px-8 -mt-8 relative z-30">
@@ -675,8 +686,8 @@
         }
         .ai-chat-box {
             display: none;
-            width: 340px;
-            height: 440px;
+            width: 350px;
+            height: 480px;
             background-color: #ffffff;
             border-radius: 20px;
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
@@ -721,6 +732,44 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+        .ai-quick-questions {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px 14px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        .ai-quick-questions::-webkit-scrollbar {
+            height: 4px;
+        }
+        .ai-quick-questions::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .ai-quick-questions::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .ai-chip-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+            background-color: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #ffedd5;
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .ai-chip-btn:hover {
+            background-color: #f97316;
+            color: #ffffff;
+            border-color: #f97316;
         }
         .ai-message {
             background-color: #e2e8f0;
@@ -795,9 +844,20 @@
                 </span>
                 <button class="ai-close-btn" id="aiCloseBtn">&times;</button>
             </div>
-            <div class="ai-chat-body" id="aiChatBody">
-                <p class="ai-message">Merhaba! Ben Alveral Yapay Zeka Asistanıyım. Aradığınız ürünü veya kategoriyi bana sorabilirsiniz. 🤖</p>
+            
+            <!-- Hazır Hızlı Soru Butonları (Kaydırılabilir & Esnek) -->
+            <div class="ai-quick-questions">
+                <button class="ai-chip-btn" onclick="sendQuickQuestion('En çok satan ürünler neler?')">🔥 En Çok Satanlar</button>
+                <button class="ai-chip-btn" onclick="sendQuickQuestion('Ne önerirsin, en iyi ürün hangisi?')">⭐ Ne Önerirsin?</button>
+                <button class="ai-chip-btn" onclick="sendQuickQuestion('Hangi kargo şirketiyle çalışıyorsunuz?')">🚚 Kargo & Sipariş</button>
+                <button class="ai-chip-btn" onclick="sendQuickQuestion('Siz kimsiniz?')">🏬 Alveral Kimdir?</button>
+                <button class="ai-chip-btn" onclick="sendQuickQuestion('Instagram adresiniz ne?')">📸 Instagram</button>
             </div>
+
+            <div class="ai-chat-body" id="aiChatBody">
+                <p class="ai-message">Merhaba! Ben Alveral Yapay Zeka Asistanıyım. Size en uygun ürünü bulmak veya sorularınızı yanıtlamak için buradayım! 🤖</p>
+            </div>
+
             <div class="ai-chat-footer">
                 <input type="text" placeholder="Ürün veya kategori sorun..." id="aiInput">
                 <button id="aiSendBtn">Gönder</button>
@@ -827,20 +887,64 @@
         chatBox.style.display = 'none';
     });
 
+    window.sendQuickQuestion = function(questionText) {
+        input.value = questionText;
+        sendMessage();
+    };
+
     function getSmartReply(userText) {
         const text = userText.toLowerCase();
-        if (text.includes('merhaba') || text.includes('selam') || text.includes('hey')) {
-            return "Tekrar merhaba! Size nasıl bir ürün bulmamı istersiniz? 😊";
-        } else if (text.includes('fiyat') || text.includes('ücret') || text.includes('kaç para')) {
-            return "Ürünlerimizin güncel fiyatlarını en çok satanlar ve mağaza vitrinimizden inceleyebilirsiniz 🏷️";
-        } else if (text.includes('en çok satan') || text.includes('popüler') || text.includes('en iyisi')) {
-            return "Sayfanın üst kısmındaki 'Best Sellers' geometrik vitrinimizdeki 7 özel parçayı kesinlikle incelemelisin! 🔥";
-        } else if (text.includes('kategori') || text.includes('çeşit')) {
-            return "Sayfadaki kategori kaydırma slider'ından dilediğin kategoriye hızlıca geçiş yapabilirsin 🛍️";
-        } else if (text.includes('teşekkür') || text.includes('sağol')) {
-            return "Rica ederim! Keyifli alışverişler dilerim, başka bir şey ararsan buradayım ✨";
-        } else {
-            return "Anladım! Bu konuda sana rehberlik etmek için buradayım. Aradığın özel bir ürün veya marka var mı?";
+        
+        if (text.includes('selamun aleyküm') || text.includes('s.a')) {
+            return "Aleykümselam! Hoş geldiniz, safalar getirdiniz. Buyurun, ne arzu etmiştiniz? 🌸";
+        } 
+        else if (text.includes('hello') || text.includes('hi') || text.includes('merhaba') || text.includes('selam')) {
+            return "Hellooo! Welcome to Alveral! Size nasıl yardımcı olabilirim? 🤖✨";
+        } 
+        else if (text.includes('müslüman mısın') || text.includes('dinin ne')) {
+            return "Ben neticede kodlardan oluşan bir yapay zeka robotuyum 🤖 ama kanlı canlı insan olsaydım Elhamdülillah ben de sizden olurdum! 😄";
+        } 
+        else if (text.includes('nerelisin') || text.includes('kaç yaşındasın')) {
+            return "Ruhum dijital, köküm Burdur Çavdır! 30 yıllık ticaret kültürünün içine doğmuş yeni nesil bir yapay zekayım. Yaşım yok ama enerjim hep 18! ⚡";
+        }
+        else if (text.includes('gerçek misin') || text.includes('insan mısın')) {
+            return "Şu an karşında yapay zeka var ama arkamda 30 yıllık esnaf tecrübesi var! Yani emniyettesin, robot elimle çay ikram edemem ama en iyi ürünü bulurum ☕🤖";
+        }
+        else if (text.includes('ne önerirsin') || text.includes('en iyi ürün') || text.includes('tavsiye') || text.includes('ne almalıyım')) {
+            return "Alveral vitrinindeki her ürün kendi kategorisinin yıldızıdır! 🔥 Ancak en çok tercih edilen popüler parçaları görmek için 'En Çok Satanlar' bölümümüze göz atabilir ya da aradığınız ürün türünü söylerseniz size en iyisini hemen seçerim! 🛍️✨";
+        }
+        else if (text.includes('en çok satan') || text.includes('popüler') || text.includes('best seller')) {
+            return "En popüler ürünlerimizi doğrudan sayfamızdaki **'En Çok Satanlar'** bölümünden inceleyebilirsiniz! 🚀";
+        } 
+        else if (text.includes('kargo') || text.includes('teslimat') || text.includes('sipariş')) {
+            return "Ürünlerimiz ulusal satış platformlarına (Trendyol, Amazon, Hepsiburada vb.) yönlendirilmektedir. Dilediğiniz güvenli platform üzerinden siparişinizi gönül rahatlığıyla oluşturabilirsiniz! 🚚✨";
+        }
+        else if (text.includes('indirim yap') || text.includes('pazarlık')) {
+            return "Canın sağ olsun! Pazar yerlerindeki en cömert kampanyaları yakalaman için buradayım, sepeti doldur indirimler seni bekliyor 😉🔥";
+        }
+        else if (text.includes('fiyat') || text.includes('ücret') || text.includes('kaç para')) {
+            return "Güncel fiyatları vitrinimizden inceleyebilir; dilediğiniz e-ticaret platformundan alışveriş yaparak o uygulamaya özel kupon ve fiyat avantajlarından yararlanabilirsiniz! 🏷️💳";
+        } 
+        else if (text.includes('kimsiniz') || text.includes('alveral kim') || text.includes('güvenilir misiniz')) {
+            return "Burdur Çavdır'da 30 yılı aşkın köklü esnaflık ve ticaret birikimine sahip bir aile şirketiyiz! Yılların getirdiği güveni Alveral markasıyla dijital dünyaya taşıyoruz. 🏢✨";
+        }
+        else if (text.includes('ismi nereden') || text.includes('ne demek')) {
+            return "Alveral; dürüst ticaretin en tatlı ritmi olan 'Al - Ver - Al' döngüsünden geliyor! Hem bereketli bir alışverişi hem de alanın da satanın da yüzünü güldüren bir köprüyü simgeliyor. 😉🛍️";
+        }
+        else if (text.includes('instagram') || text.includes('sosyal medya')) {
+            return "Özel sürprizler, yeni koleksiyonlar ve güncel paylaşımlar için bizi Instagram'da **@alveral.tr** hesabımızdan takip edebilirsiniz! 📸";
+        }
+        else if (text.includes('iade') || text.includes('değişim')) {
+            return "Siparişinizi hangi pazar yerinden oluşturduysanız, o platformun kolay iade ve değişim koşulları geçerlidir. Hiçbir sorun yaşamadan işlemlerinizi gerçekleştirebilirsiniz! 🔄";
+        }
+        else if (text.includes('naber') || text.includes('nasılsın')) {
+            return "İyilik, güzellik! Sunucularım tıkır tıkır çalışıyor, size hizmet etmek için enerjim %100! Siz nasılsınız? 😊";
+        }
+        else if (text.includes('teşekkür') || text.includes('sağol')) {
+            return "Rica ederim! Keyifli alışverişler dilerim, başka bir sorunuz olursa ben hep buradayım ✨";
+        } 
+        else {
+            return "Harika bir soru! Aradığınız ürünün adını veya kategorisini yazarsanız size en uygun seçenekleri hemen önerebilirim 🛍️";
         }
     }
 
@@ -861,7 +965,7 @@
             aiMsg.textContent = getSmartReply(text);
             chatBody.appendChild(aiMsg);
             chatBody.scrollTop = chatBody.scrollHeight;
-        }, 800);
+        }, 600);
     }
 
     sendBtn.addEventListener('click', sendMessage);
@@ -931,34 +1035,67 @@
 
 
 
-    <footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-            <div>
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4">
-                <p class="text-gray-400 font-light leading-relaxed">Özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.</p>
-            </div>
-            <div>
-                <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
-                <ul class="space-y-2 text-gray-400 font-light">
-                    <li><a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a></li>
-                    <li><a href="http://localhost/alveral/public/admin/products" class="hover:text-white transition">Panel</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
-                <p class="text-gray-400 font-light">Destek ve işbirliği için:</p>
-                <p class="text-brandOrange font-bold mt-1">iletisim@alveral.com</p>
-            </div>
+<footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+        
+        <div>
+            <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4 brightness-120">
+            <p class="text-gray-400 font-light leading-relaxed">
+                30 yılı aşkın tecrübemizle özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.
+            </p>
         </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
-    <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
-    
-    <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
-        <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
-        <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
-    </a>
-</div>
-    </footer>
+
+        <div>
+            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
+            <ul class="space-y-2.5 text-gray-400 font-light">
+                <li>
+                    <a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a>
+                </li>
+                <li>
+                    <a href="{{ route('contact') }}" class="hover:text-white transition">Hakkımızda & İletişim</a>
+                </li>
+                
+                <li>
+                    <a href="https://www.instagram.com/alveral.tr/" target="_blank" class="hover:text-white transition flex items-center gap-2 group">
+                        <svg class="w-4 h-4 text-brandOrange group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                        </svg>
+                        <span>Instagram (@alveral.tr)</span>
+                    </a>
+                </li>
+
+                @auth('admin')
+                    <li class="pt-2 border-t border-gray-800">
+                        <a href="{{ route('admin.dashboard') }}" class="text-brandOrange hover:text-orange-400 font-bold transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>Yönetim Paneli</span>
+                        </a>
+                    </li>
+                @endauth
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
+            <p class="text-gray-400 font-light">Destek, öneri ve iş birliği talepleriniz için:</p>
+            <a href="mailto:iletisim@alveral.com" class="inline-block text-brandOrange font-bold mt-2 hover:underline transition">
+                iletisim@alveral.com
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
+        <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
+        <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
+            <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
+            <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
+        </a>
+    </div>
+</footer>
 
 </body>
 </html>

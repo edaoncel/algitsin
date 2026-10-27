@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', 'Algitsin - E- Ticaret Resmi Satış Sitesi')
+@section('title', 'Alveral - E- Ticaret Resmi Satış Sitesi')
 
 @section('content')
 
@@ -24,7 +24,7 @@
             Yıllardır dükkanımızda terzilikten perde tasarımlarına kadar binbir emekle büyüttüğümüz esnaflık kültürünü ve güveni şimdi dijital dünyaya taşıyoruz. Bir anne ve iki kızı olarak; kadın elinin değdiği her işte olduğu gibi ticarette de zarafeti, dürüstlüğü ve samimiyeti en başköşeye koyuyoruz.
         </p>
         <p class="text-sm sm:text-base font-light">
-            <strong class="text-gray-900 font-bold">Algitsin</strong> çatısı altında; <span class="text-brandOrange font-bold">Algitsin</span>, <span class="text-brandOrange font-bold">Algitsin kazan</span> ve <span class="text-brandOrange font-bold">Algitsin hemen</span> mottolarımızla en seçkin ürünleri en hızlı şekilde kapınıza getiriyoruz. Ailemizin 30 yıllık ticaret tecrübesini ve sıcaklığını sizlerle buluşturmaktan gurur duyuyoruz.
+            <strong class="text-gray-900 font-bold">Alveral</strong> çatısı altında; mottolarımızla en seçkin ürünleri en hızlı şekilde kapınıza getiriyoruz. Ailemizin 30 yıllık ticaret tecrübesini ve sıcaklığını sizlerle buluşturmaktan gurur duyuyoruz.
         </p>
     </div>
 
@@ -37,14 +37,8 @@
                 <p class="text-xs text-gray-400 mb-6 font-light">Özel koleksiyonlarımız ve avantajlı dünyamız için bizi takip edin:</p>
                 
                 <div class="space-y-3">
-                    <a href="https://instagram.com/algitsin_hesap_linkin" target="_blank" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-orange-50 hover:text-brandOrange rounded-2xl font-bold text-xs transition border border-gray-100">
-                         Algitsin
-                    </a>
-                    <a href="https://instagram.com/algitsinkazan_linkin" target="_blank" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-orange-50 hover:text-brandOrange rounded-2xl font-bold text-xs transition border border-gray-100">
-                         Algitsin Kazan
-                    </a>
-                    <a href="https://instagram.com/algitsinhemen_linkin" target="_blank" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-orange-50 hover:text-brandOrange rounded-2xl font-bold text-xs transition border border-gray-100">
-                         Algitsin Hemen
+                    <a href="https://www.instagram.com/alveral.tr/" target="_blank" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-orange-50 hover:text-brandOrange rounded-2xl font-bold text-xs transition border border-gray-100">
+                         Alveral
                     </a>
                 </div>
             </div>

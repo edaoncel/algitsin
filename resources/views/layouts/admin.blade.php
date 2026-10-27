@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Algitsin Admin Panel')</title>
+    <title>@yield('title', 'Alveral Admin Panel')</title>
     <link rel="icon" type="image/png" href="{{ asset('img/logo/link_logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -29,7 +29,7 @@
             
             <div class="h-16 flex items-center justify-between px-6 bg-slate-900/50 border-b border-slate-800">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-8 w-auto">
+                    <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto">
                 </a>
             </div>
 
@@ -88,7 +88,7 @@
             <div class="p-4 bg-slate-900/50 border-t border-slate-800 flex items-center justify-between">
                 <div class="text-xs text-slate-400 truncate">
                     <span class="block font-bold text-white">{{ Auth::guard('admin')->user()->name ?? 'Yönetici' }}</span>
-                    Algitsin Panel v1.0
+                    Alveral Panel v1.0
                 </div>
                 <form action="{{ route('admin.logout') }}" method="POST">
                     @csrf
@@ -110,7 +110,7 @@
                x-transition:leave-end="-translate-x-full" 
                class="fixed inset-y-0 left-0 w-64 bg-brandDark text-white z-50 md:hidden flex flex-col shadow-2xl">
             <div class="h-16 flex items-center justify-between px-6 bg-slate-900/50 border-b border-slate-800">
-                <span class="font-bold text-white text-lg">Algitsin Panel</span>
+                <span class="font-bold text-white text-lg">Alveral Panel</span>
                 <button @click="sidebarOpen = false" class="text-slate-400 hover:text-white">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -173,7 +173,7 @@
                 <button @click="sidebarOpen = true" class="p-2 text-gray-600 hover:text-gray-900 rounded-lg focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-7 w-auto">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto">
                 
                 <form action="{{ route('admin.logout') }}" method="POST">
                     @csrf

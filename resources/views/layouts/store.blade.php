@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Algitsin')</title>
+    <title>@yield('title', 'Alveral')</title>
     <link rel="icon" type="image/png" href="{{ asset('img/logo/link_logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
    
@@ -29,7 +29,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex justify-between items-center">
             
             <a href="{{ url('/') }}" class="flex items-center">
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-8 sm:h-10 w-auto object-contain">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 sm:h-12 w-auto object-contain">
             </a>
 
             <div class="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide text-gray-700">
@@ -102,7 +102,7 @@
     <footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
             <div>
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-8 w-auto mb-4 brightness-120">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4 brightness-120">
                 <p class="text-gray-400 font-light leading-relaxed">Özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.</p>
             </div>
             <div>
@@ -115,13 +115,13 @@
             <div>
                 <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
                 <p class="text-gray-400 font-light">Destek ve işbirliği için:</p>
-                <p class="text-brandOrange font-bold mt-1">iletisim@algitsin.com</p>
+                <p class="text-brandOrange font-bold mt-1">iletisim@alveral.com</p>
             </div>
         </div>
         <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
-            <p>© {{ date('Y') }} Algitsin. Tüm hakları saklıdır.</p>
+            <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
             <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
-                <span class="text-gray-300">Algitsin Tasarım & Geliştirme:</span>
+                <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
                 <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
             </a>
         </div>

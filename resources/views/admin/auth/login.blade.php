@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Girişi - Algitsin</title>
+    <title>Yönetici Girişi - Alveral</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-950 text-white flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md p-8 bg-gray-900 border border-gray-800 rounded-3xl shadow-2xl">
         <div class="text-center mb-8">
-            <span class="text-xs uppercase tracking-widest text-orange-500 font-extrabold">Algitsin Panel</span>
+            <span class="text-xs uppercase tracking-widest text-orange-500 font-extrabold">Alveral Panel</span>
             <h1 class="text-2xl font-black mt-1">Yönetici Girişi</h1>
         </div>
 

@@ -23,6 +23,6 @@ class ContactController extends Controller
 
         ContactMessage::create($validated);
 
-        return back()->with('success', 'Mesajınız başarıyla alındı! Algitsin ailesi olarak en kısa sürede dönüş yapacağız.');
+        return back()->with('success', 'Mesajınız başarıyla alındı! Alveral ailesi olarak en kısa sürede dönüş yapacağız.');
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algitsin - E- Ticaret Resmi Satış Sitesi</title>
+    <title>Alveral - E- Ticaret Resmi Satış Sitesi</title>
     <link rel="icon" type="image/png" href="{{ asset('img/logo/link_logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -29,7 +29,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex justify-between items-center">
             
             <a href="{{ url('/') }}" class="flex items-center">
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-8 sm:h-10 w-auto object-contain">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 sm:h-12 w-auto object-contain">
             </a>
 
             <div class="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide text-gray-700">
@@ -791,12 +791,12 @@
             <div class="ai-chat-header">
                 <span style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                     <span style="width: 20px; height: 20px; display: inline-flex; align-items: center;">${robotSvg}</span>
-                    Algitsin Asistan
+                    Alveral Asistan
                 </span>
                 <button class="ai-close-btn" id="aiCloseBtn">&times;</button>
             </div>
             <div class="ai-chat-body" id="aiChatBody">
-                <p class="ai-message">Merhaba! Ben Algitsin Yapay Zeka Asistanıyım. Aradığınız ürünü veya kategoriyi bana sorabilirsiniz. 🤖</p>
+                <p class="ai-message">Merhaba! Ben Alveral Yapay Zeka Asistanıyım. Aradığınız ürünü veya kategoriyi bana sorabilirsiniz. 🤖</p>
             </div>
             <div class="ai-chat-footer">
                 <input type="text" placeholder="Ürün veya kategori sorun..." id="aiInput">
@@ -934,27 +934,27 @@
     <footer id="iletisim" class="bg-gray-900 text-white py-16 px-6 mt-24">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
             <div>
-                <img src="{{ asset('img/logo/logo.png') }}" alt="Algitsin" class="h-8 w-auto mb-4 brightness-120">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="Alveral" class="h-12 w-auto mb-4">
                 <p class="text-gray-400 font-light leading-relaxed">Özenle seçilmiş ürünleri ve en avantajlı fırsatları modern vitrin konseptiyle buluşturuyoruz.</p>
             </div>
             <div>
                 <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Keşfet</h3>
                 <ul class="space-y-2 text-gray-400 font-light">
                     <li><a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a></li>
-                    <li><a href="http://localhost/algitsin/public/admin/products" class="hover:text-white transition">Panel</a></li>
+                    <li><a href="http://localhost/alveral/public/admin/products" class="hover:text-white transition">Panel</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
                 <p class="text-gray-400 font-light">Destek ve işbirliği için:</p>
-                <p class="text-brandOrange font-bold mt-1">iletisim@algitsin.com</p>
+                <p class="text-brandOrange font-bold mt-1">iletisim@alveral.com</p>
             </div>
         </div>
         <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col items-center justify-center text-center text-sm text-gray-400 font-light">
-    <p>© {{ date('Y') }} Algitsin. Tüm hakları saklıdır.</p>
+    <p>© {{ date('Y') }} Alveral. Tüm hakları saklıdır.</p>
     
     <a href="https://edaoncel.github.io/edaoncell/project.html" target="_blank" rel="noopener noreferrer" class="mt-4 hover:text-white transition duration-300 flex items-center gap-2 group">
-        <span class="text-gray-300">Algitsin Tasarım & Geliştirme:</span>
+        <span class="text-gray-300">Alveral Tasarım & Geliştirme:</span>
         <span class="font-bold text-white underline underline-offset-4 decoration-brandOrange group-hover:text-brandOrange transition tracking-wider">Eda Öncel</span>
     </a>
 </div>

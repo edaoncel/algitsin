@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Algitsin - Ürün Düzenle')
+@section('title', 'Alveral - Ürün Düzenle')
 
 @section('content')
 <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">

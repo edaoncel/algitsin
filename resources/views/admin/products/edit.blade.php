@@ -35,6 +35,15 @@
         </div>
 
         <div>
+            <label class="block text-gray-700 font-medium mb-1 text-sm">Stok Kodu (SKU) <span class="text-xs text-slate-400 font-normal">(Benzersiz Kod)</span></label>
+            <input type="text" 
+                name="sku" 
+                value="{{ old('sku', $product->sku ?? '') }}" 
+                class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm uppercase" 
+                placeholder="Örn: PRD-2026-001">
+        </div>
+
+        <div>
             <label class="block text-gray-700 font-medium mb-1 text-sm">Kategori</label>
             <select name="category_id" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white">
                 <option value="">Kategori Seçin</option>
@@ -59,7 +68,7 @@
                     placeholder="Ürün hakkında detaylar...">{{ old('description', $product->description) }}</textarea>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
                 <label class="block text-gray-700 font-medium mb-1 text-sm">Fiyat (₺)</label>
                 <input type="number" step="0.01" name="price" value="{{ old('price', $product->price) }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
@@ -75,27 +84,27 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div>
-            <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Trendyol Linki</label>
-            <input type="url" name="trendyol_url" value="{{ old('trendyol_url', $product->trendyol_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.trendyol.com/...">
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Trendyol Linki</label>
+                <input type="url" name="trendyol_url" value="{{ old('trendyol_url', $product->trendyol_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.trendyol.com/...">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Hepsiburada Linki</label>
+                <input type="url" name="hepsiburada_url" value="{{ old('hepsiburada_url', $product->hepsiburada_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.hepsiburada.com/...">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-600 mb-1">İdefix Linki</label>
+                <input type="url" name="idefix_url" value="{{ old('idefix_url', $product->idefix_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.idefix.com/...">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Amazon Linki</label>
+                <input type="url" name="amazon_url" value="{{ old('amazon_url', $product->amazon_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.amazon.com.tr/...">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Pazarama Linki</label>
+                <input type="url" name="pazarama_url" value="{{ old('pazarama_url', $product->pazarama_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.pazarama.com/...">
+            </div>
         </div>
-        <div>
-            <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Hepsiburada Linki</label>
-            <input type="url" name="hepsiburada_url" value="{{ old('hepsiburada_url', $product->hepsiburada_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.hepsiburada.com/...">
-        </div>
-        <div>
-            <label class="block text-xs font-bold uppercase text-gray-600 mb-1">İdefix Linki</label>
-            <input type="url" name="idefix_url" value="{{ old('idefix_url', $product->idefix_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.idefix.com/...">
-        </div>
-        <div>
-            <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Amazon Linki</label>
-            <input type="url" name="amazon_url" value="{{ old('amazon_url', $product->amazon_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.amazon.com.tr/...">
-        </div>
-        <div class="md:col-span-2">
-            <label class="block text-xs font-bold uppercase text-gray-600 mb-1">Pazarama Linki</label>
-            <input type="url" name="pazarama_url" value="{{ old('pazarama_url', $product->pazarama_url ?? '') }}" class="w-full border rounded-xl px-4 py-2 text-sm" placeholder="https://www.pazarama.com/...">
-        </div>
-    </div>
 
         @if($product->images && count($product->images) > 0)
             <div>

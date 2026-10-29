@@ -9,6 +9,10 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\ContactMessageController;
 
+Route::get('/admin/products/export', [ProductController::class, 'exportExcel'])->name('admin.products.export');
+
+Route::resource('admin/products', ProductController::class);
+
 Route::get('/', [StoreController::class, 'index'])->name('store.index');
 
 Route::get('/iletisim', function () {

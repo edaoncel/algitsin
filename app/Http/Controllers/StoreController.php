@@ -13,7 +13,11 @@ class StoreController extends Controller
         $query = Product::with('category');
 
         if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('sku', 'like', '%' . $searchTerm . '%');
+            });
         }
 
         if ($request->has('category') && $request->category != '') {
@@ -22,15 +26,15 @@ class StoreController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(12);
+        $products = $query->latest()->paginate(12)->withQueryString();
         $productsCount = Product::count();
         
         $categories = Category::with('products')->get();
         
         $bestSellers = Product::with('category')->where('is_best_seller', true)->latest()->take(7)->get();
 
-        $discountedProducts = Product::with('category')->whereNotNull('discount_price')->latest()->take(6)->get();
+        $discountedProducts = Product::with('category')->whereNotNull('discount_price')->where('discount_price', '>', 0)->latest()->take(6)->get();
 
-        return view('store.index', compact('products', 'categories', 'bestSellers', 'discountedProducts'));
+        return view('store.index', compact('products', 'categories', 'bestSellers', 'discountedProducts', 'productsCount'));
     }
 }

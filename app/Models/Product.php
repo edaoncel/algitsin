@@ -16,6 +16,7 @@ class Product extends Model
         'price',
         'discount_price',
         'stock',
+        'sku',
         'trendyol_url',
         'hepsiburada_url',
         'idefix_url',

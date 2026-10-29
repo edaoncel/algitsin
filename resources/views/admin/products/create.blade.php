@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alveral - Yeni Ürün Ekle</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-slate-50 p-4 sm:p-8">
     <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-100">
@@ -22,6 +23,8 @@
 
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
+            
+            <!-- Ürün Adı -->
             <div x-data="{ count: {{ mb_strlen(old('name', $product->name ?? '')) }} }">
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-gray-700 font-medium text-sm">Ürün Adı</label>
@@ -35,6 +38,17 @@
                     class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
                     required>
             </div>
+
+            <!-- Stok Kodu (SKU) -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1 text-sm">Stok Kodu (SKU) <span class="text-xs text-slate-400 font-normal">(Benzersiz Kod)</span></label>
+                <input type="text" 
+                    name="sku" 
+                    value="{{ old('sku', $product->sku ?? '') }}" 
+                    class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm uppercase" 
+                    placeholder="Örn: PRD-2026-001">
+            </div>
+
             <div>
                 <label class="block text-gray-700 font-medium mb-1 text-sm">Kategori</label>
                 <select name="category_id" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white">
@@ -47,7 +61,7 @@
                 </select>
             </div>
             
-            <div x-data="{ count: {{ mb_strlen(old('description', '')) }} }">
+            <div x-data="{ count: {{ mb_strlen(old('description', $product->description ?? '')) }} }">
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-gray-700 font-medium text-sm">Ürün Açıklaması</label>
                     <span class="text-xs font-semibold text-gray-400" x-text="count + ' / 505'"></span>
@@ -57,21 +71,21 @@
                         maxlength="505" 
                         @input="count = $el.value.length" 
                         class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
-                        placeholder="Ürün hakkında detaylar...">{{ old('description') }}</textarea>
+                        placeholder="Ürün hakkında detaylar...">{{ old('description', $product->description ?? '') }}</textarea>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-gray-700 font-medium mb-1 text-sm">Fiyat (₺)</label>
-                    <input type="number" step="0.01" name="price" value="{{ old('price') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
+                    <input type="number" step="0.01" name="price" value="{{ old('price', $product->price ?? '') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1 text-sm">İndirimli Fiyat (₺) <span class="text-xs text-gray-400 font-normal">(İsteğe Bağlı)</span></label>
-                    <input type="number" step="0.01" name="discount_price" value="{{ old('discount_price') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="Varsa indirimli fiyat">
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">İndirimli Fiyat (₺)</label>
+                    <input type="number" step="0.01" name="discount_price" value="{{ old('discount_price', $product->discount_price ?? '') }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" placeholder="İsteğe bağlı">
                 </div>
                 <div>
                     <label class="block text-gray-700 font-medium mb-1 text-sm">Stok Adedi</label>
-                    <input type="number" name="stock" value="{{ old('stock', 10) }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
+                    <input type="number" name="stock" value="{{ old('stock', $product->stock ?? 10) }}" class="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" required>
                 </div>
             </div>
 
@@ -104,9 +118,9 @@
             </div>
             
             <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <input type="checkbox" name="is_best_seller" id="is_best_seller" value="1" {{ (isset($product) && $product->is_best_seller) || old('is_best_seller') ? 'checked' : '' }} class="w-5 h-5 text-brandOrange border-gray-300 rounded focus:ring-brandOrange">
+                <input type="checkbox" name="is_best_seller" id="is_best_seller" value="1" {{ (isset($product) && $product->is_best_seller) || old('is_best_seller') ? 'checked' : '' }} class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                 <label for="is_best_seller" class="text-sm font-bold text-gray-800 cursor-pointer">
-                    Haftanın En Çok Satanlar Listesine Ekle <span class="text-xs font-normal text-slate-500">(Vitrin üst kısmında özel bento alanda sergilenir, max 7 ürün)</span>
+                    Haftanın En Çok Satanlar Listesine Ekle <span class="text-xs font-normal text-slate-500">(Vitrin üst kısmında sergilenir, max 7 ürün)</span>
                 </label>
             </div>
 

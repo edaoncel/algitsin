@@ -1,3 +1,8 @@
+@extends('layouts.admin')
+
+@section('title', 'Alveral - Ürün Ekle')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -21,8 +26,8 @@
             </div>
         @endif
 
-        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+           @csrf
             
             <!-- Ürün Adı -->
             <div x-data="{ count: {{ mb_strlen(old('name', $product->name ?? '')) }} }">
@@ -125,10 +130,11 @@
             </div>
 
             <div class="flex justify-between items-center pt-4 border-t border-slate-100">
-                <a href="{{ route('products.index') }}" class="text-gray-600 hover:underline text-sm font-medium">Geri Dön</a>
+                <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:underline text-sm font-medium">Geri Dön</a>
                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition text-sm shadow-sm">Kaydet</button>
             </div>
         </form>
     </div>
 </body>
 </html>
+@endsection

@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-extrabold text-slate-900">Kategori Düzenle</h1>
             <p class="text-sm text-slate-500">"{{ $category->name }}" kategorisini güncelleyebilirsiniz.</p>
         </div>
-        <a href="{{ route('categories.index') }}" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl text-sm font-bold transition">
+        <a href="{{ route('admin.categories.index') }}" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl text-sm font-bold transition">
             ← Geri Dön
         </a>
     </div>
@@ -31,7 +31,7 @@
     @endif
 
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
-        <form action="{{ route('categories.update', $category->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -58,7 +58,7 @@
             </div>
 
             <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                <a href="{{ route('categories.index') }}" class="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 transition">İptal</a>
+                <a href="{{ route('admin.categories.index') }}" class="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 transition">İptal</a>
                 <button type="submit" class="bg-brandOrange text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-orange-600 transition shadow-sm">Değişiklikleri Kaydet</button>
             </div>
         </form>

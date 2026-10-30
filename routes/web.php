@@ -8,20 +8,12 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\ContactMessageController;
-
-Route::get('/admin/products/export', [ProductController::class, 'exportExcel'])->name('admin.products.export');
-
-Route::resource('admin/products', ProductController::class);
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MarketplaceController;
 
 Route::get('/', [StoreController::class, 'index'])->name('store.index');
-
-Route::get('/iletisim', function () {
-    return view('contact');
-})->name('contact');
-
+Route::get('/iletisim', fn() => view('contact'))->name('contact');
 Route::post('/iletisim', [ContactController::class, 'store'])->name('contact.store');
-Route::resource('admin/products', ProductController::class);
-Route::resource('admin/categories', CategoryController::class)->only(['index', 'store', 'destroy']);
 
 Route::prefix('yonetim')->name('admin.')->group(function () {
     Route::get('giris', [AuthController::class, 'showLoginForm'])->name('login');
@@ -29,27 +21,22 @@ Route::prefix('yonetim')->name('admin.')->group(function () {
     Route::post('cikis', [AuthController::class, 'logout'])->name('logout');
 
     Route::middleware('auth:admin')->group(function () {
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('/visitors', [AdminController::class, 'visitors'])->name('visitors');
+        Route::delete('/visitors/clear', [AdminController::class, 'clearVisitors'])->name('visitors.clear');
+
+        Route::get('/products/export', [ProductController::class, 'exportExcel'])->name('products.export');
+        Route::resource('products', ProductController::class);
+        Route::resource('categories', CategoryController::class)->except(['show']);
 
         Route::resource('admins', AdminManagementController::class);
-
         Route::resource('messages', ContactMessageController::class)->only(['index', 'destroy']);
+
+        Route::prefix('marketplaces')->name('marketplaces.')->group(function () {
+            Route::get('/settings', [MarketplaceController::class, 'settings'])->name('settings');
+            Route::post('/settings/{marketplace}', [MarketplaceController::class, 'updateSettings'])->name('settings.update');
+            Route::get('/logs', [MarketplaceController::class, 'logs'])->name('logs');
+            Route::post('/sync-all', [MarketplaceController::class, 'syncAll'])->name('syncAll');
+        });
     });
 });
-
-use App\Http\Controllers\Admin\AdminController;
-Route::get('/yonetim', [AdminController::class, 'index'])->name('admin.dashboard');
-
-Route::get('/visitors', [AdminController::class, 'visitors'])->name('admin.visitors');
-
-Route::delete('/admin/visitors/clear', [AdminController::class, 'clearVisitors'])->name('admin.visitors.clear');
-
-Route::prefix('yonetim')->name('admin.')->group(function () {
-    Route::middleware('auth:admin')->group(function () {
-        Route::resource('products', App\Http\Controllers\ProductController::class);
-    });
-});
-
-Route::resource('admin/categories', CategoryController::class)->except(['show']);

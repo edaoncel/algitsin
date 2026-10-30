@@ -52,7 +52,7 @@ class CategoryController extends Controller
         }
         
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Kategori başarıyla silindi.');
+        return redirect()->route('admin.categories.index')->with('success', 'Kategori başarıyla silindi.');
     }
 
     public function update(Request $request, $id)

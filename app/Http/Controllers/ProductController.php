@@ -103,7 +103,7 @@ class ProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('products.index')->with('success', 'Ürün başarıyla eklendi.');
+        return redirect()->route('admin.products.index')->with('success', 'Ürün başarıyla eklendi.');
     }
 
     public function edit(Product $product)
@@ -182,7 +182,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Ürün ve görseller başarıyla güncellendi.');
+        return redirect()->route('admin.products.index')->with('success', 'Ürün ve görseller başarıyla güncellendi.');
     }
 
     public function destroy(Product $product)
@@ -198,7 +198,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Ürün başarıyla silindi.');
+        return redirect()->route('admin.products.index')->with('success', 'Ürün başarıyla silindi.');
     }
 
 public function exportExcel()

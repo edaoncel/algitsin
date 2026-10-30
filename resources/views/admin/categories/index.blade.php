@@ -28,7 +28,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit">
     <h2 class="text-lg font-bold text-gray-900 mb-4">Yeni Kategori Ekle</h2>
-    <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         <div>
             <label class="block text-gray-700 font-medium mb-1 text-sm">Kategori Adı</label>
@@ -75,11 +75,11 @@
                                 </td>
                                 <td class="py-4 px-4 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center gap-2">
-                                        <a href="{{ route('categories.edit', $category->id) }}" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">
+                                        <a href="{{ route('admin.categories.edit', $category->id) }}" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">
                                             Düzenle
                                         </a>
 
-                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
+                                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm">Sil</button>

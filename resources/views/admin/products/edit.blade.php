@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         @method('PUT')
 
@@ -136,7 +136,7 @@
         </div>
 
         <div class="flex justify-between items-center pt-4 border-t border-slate-100">
-            <a href="{{ route('products.index') }}" class="text-gray-600 hover:underline text-sm font-medium">Geri Dön</a>
+            <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:underline text-sm font-medium">Geri Dön</a>
             <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition text-sm shadow-sm">Değişiklikleri Kaydet</button>
         </div>
     </form>

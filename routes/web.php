@@ -11,6 +11,23 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MarketplaceController;
 
+// Yönetim Paneli Rotaları (Admin Mimarisine Göre)
+Route::prefix('yonetim')->name('admin.')->middleware(['web', 'auth:admin'])->group(function () {
+    
+    // Pazar Yeri / Alveral Entegrasyon Rotaları
+    Route::prefix('marketplaces')->name('marketplaces.')->group(function () {
+        Route::get('/settings', [MarketplaceController::class, 'settings'])->name('settings');
+        Route::post('/settings/{marketplace}', [MarketplaceController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/logs', [MarketplaceController::class, 'logs'])->name('logs');
+        Route::post('/sync-all', [MarketplaceController::class, 'syncAll'])->name('syncAll');
+        
+        // Alveral Özel İşlem Rotaları (Blade içindeki isimlerle birebir uyumlu)
+        Route::post('/alveral/kar', [MarketplaceController::class, 'updateMargin'])->name('alveral.kar');
+        Route::post('/alveral/sync', [MarketplaceController::class, 'uploadAndSync'])->name('alveral.sync');
+    });
+
+});
+
 Route::get('/', [StoreController::class, 'index'])->name('store.index');
 Route::get('/iletisim', fn() => view('contact'))->name('contact');
 Route::post('/iletisim', [ContactController::class, 'store'])->name('contact.store');

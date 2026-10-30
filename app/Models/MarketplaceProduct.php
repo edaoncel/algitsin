@@ -3,66 +3,95 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\MarketplaceSetting;
-use App\Models\MarketplaceLog;
-use App\Models\Product;
-use App\Jobs\SyncMarketplaceStockJob;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use Illuminate\Support\Str;
 
 class MarketplaceController extends Controller
 {
+    /**
+     * Pazar yerleri ayarlar sayfasını görüntüler.
+     */
     public function settings()
     {
-        $settings = MarketplaceSetting::all()->keyBy('marketplace');
-
-        return view('admin.marketplaces.settings', compact('settings'));
+        $urunler = Product::latest()->get();
+        return view('admin.marketplaces.settings', compact('urunler'));
     }
 
-    public function updateSettings(Request $request, string $marketplace)
+    /**
+     * Kâr Oranını Günceller
+     */
+    public function updateMargin(Request $request)
     {
-        $validated = $request->validate([
-            'is_active' => 'nullable|boolean',
-            'merchant_id' => 'required|string',
-            'api_key' => 'required|string',
-            'api_secret' => 'required|string',
-            'price_margin_percent' => 'nullable|numeric|min:0',
-        ]);
+        $yeni_kar = floatval($request->input('varsayilan_kar', 26));
+        session(['alveral_kar' => $yeni_kar]);
 
-        $validated['is_active'] = $request->has('is_active');
-
-        MarketplaceSetting::updateOrCreate(
-            ['marketplace' => $marketplace],
-            $validated
-        );
-
-        return back()->with('success', ucfirst($marketplace) . ' ayarları başarıyla güncellendi.');
+        return redirect()->back()->with('success', "Alveral kâr oranı %{$yeni_kar} olarak güncellendi!");
     }
 
-    public function logs(Request $request)
+    /**
+     * XML Dosyasını Yükler, SKU ile Eşleştirir ve Günceller
+     */
+    public function uploadAndSync(Request $request)
     {
-        $query = MarketplaceLog::latest();
+        if ($request->hasFile('xml_dosyasi') && $request->file('xml_dosyasi')->isValid()) {
+            $file = $request->file('xml_dosyasi');
+            $xmlPath = $file->getRealPath();
+            
+            if (file_exists($xmlPath)) {
+                $previous_value = libxml_use_internal_errors(true);
+                $xml = simplexml_load_file($xmlPath);
+                
+                if ($xml === false) {
+                    libxml_clear_errors();
+                    return redirect()->back()->with('error', "XML dosyası okunamadı veya geçersiz formatta!");
+                }
 
-        if ($request->filled('marketplace')) {
-            $query->where('marketplace', $request->marketplace);
+                $firma_kar = session('alveral_kar', 26.00); 
+                $sayac = 0;
+
+                $urunlerListesi = isset($xml->Urun) ? $xml->Urun : ($xml->item ?? $xml->children());
+
+                foreach ($urunlerListesi as $urun) {
+                    $stok_kodu = trim((string)($urun->StokKodu ?? $urun->sku ?? $urun->ProductCode ?? ''));
+                    $urun_adi = (string)($urun->UrunAdi ?? $urun->name ?? $urun->Title ?? 'İsimsiz Ürün');
+                    $alis_fiyati = floatval($urun->Fiyat ?? $urun->price ?? $urun->BuyingPrice ?? 0);
+                    $stok = intval($urun->Stok ?? $urun->stock ?? 0);
+                    $affiliate_url = (string)($urun->Link ?? $urun->url ?? '#');
+                    
+                    if (empty($stok_kodu)) {
+                        continue;
+                    }
+
+                    $satis_fiyati = round($alis_fiyati * (1 + ($firma_kar / 100)), 2);
+
+                    $dbProduct = Product::where('sku', $stok_kodu)->first();
+
+                    if ($dbProduct) {
+                        $dbProduct->name = $urun_adi;
+                        $dbProduct->price = $satis_fiyati;
+                        $dbProduct->stock = $stok;
+                        if (isset($dbProduct->affiliate_url)) {
+                            $dbProduct->affiliate_url = $affiliate_url;
+                        }
+                        $dbProduct->save();
+                    } else {
+                        Product::create([
+                            'sku' => $stok_kodu,
+                            'name' => $urun_adi,
+                            'slug' => Str::slug($urun_adi) . '-' . rand(1000, 9999),
+                            'price' => $satis_fiyati,
+                            'stock' => $stok,
+                            'affiliate_url' => $affiliate_url,
+                        ]);
+                    }
+                    $sayac++;
+                }
+
+                return redirect()->back()->with('success', "Alveral XML başarıyla işlendi: <b>{$sayac}</b> adet ürün güncellendi/eklendi!");
+            }
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $logs = $query->paginate(30);
-
-        return view('admin.marketplaces.logs', compact('logs'));
-    }
-
-    public function syncAll()
-    {
-        $products = Product::where('is_active', true)->get();
-
-        foreach ($products as $product) {
-            SyncMarketplaceStockJob::dispatch($product);
-        }
-
-        return back()->with('success', 'Tüm ürünler için pazaryeri stok senkronizasyonu kuyruğa eklendi.');
+        return redirect()->back()->with('error', "Geçerli bir XML dosyası yüklenemedi!");
     }
 }

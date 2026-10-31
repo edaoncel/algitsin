@@ -1052,18 +1052,7 @@
                     <a href="{{ url('/') }}" class="hover:text-white transition">Anasayfa</a>
                 </li>
                 <li>
-                    <a href="{{ route('contact') }}" class="hover:text-white transition">Hakkımızda & İletişim</a>
-                </li>
-                
-                <li>
-                    <a href="https://www.instagram.com/alveral.tr/" target="_blank" class="hover:text-white transition flex items-center gap-2 group">
-                        <svg class="w-4 h-4 text-brandOrange group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-                        </svg>
-                        <span>Instagram (@alveral.tr)</span>
-                    </a>
+                    <a href="{{ route('contact') }}" class="hover:text-white transition">İletişim</a>
                 </li>
 
                 @auth('admin')
@@ -1078,11 +1067,17 @@
         </div>
 
         <div>
-            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">İletişim</h3>
-            <p class="text-gray-400 font-light">Destek, öneri ve iş birliği talepleriniz için:</p>
-            <a href="mailto:iletisim@alveral.com" class="inline-block text-brandOrange font-bold mt-2 hover:underline transition">
-                iletisim@alveral.com
-            </a>
+            <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-white">Sosyal Medya Hesaplarımız</h3>
+                <li>
+                    <a href="https://www.instagram.com/alveral.tr/" target="_blank" class="hover:text-white transition flex items-center gap-2 group">
+                        <svg class="w-4 h-4 text-brandOrange group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                        </svg>
+                        <span>Instagram (@alveral.tr)</span>
+                    </a>
+                </li>
         </div>
 
     </div>
